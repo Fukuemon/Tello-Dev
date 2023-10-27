@@ -4,11 +4,12 @@ import curses
 
 INTERVAL = 0.2
 
-
-
 def report(str):
-    stdscr.addstr(0, 0, str)
-    stdscr.refresh()
+   try:
+     stdscr.addstr(0, 0, str)
+   except Exception:
+       pass
+   stdscr.refresh()
 
 if __name__ == "__main__":
     stdscr = curses.initscr()
@@ -33,8 +34,8 @@ if __name__ == "__main__":
             response, ip = socket.recvfrom(1024)
             if response == 'ok':
                 continue
-            out = response.replace(';', ';\n')
-            out = 'Tello State:\n' + out
+            out = response.replace(b';', b';\n')
+            out = b'Tello State:\n' + out
             report(out)
             sleep(INTERVAL)
     except KeyboardInterrupt:
